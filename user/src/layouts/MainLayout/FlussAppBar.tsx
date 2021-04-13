@@ -37,6 +37,9 @@ const FlussAppBar: FC = () => {
             Reportes recientes
           </Button>
           <Button color="inherit">¿Quiénes somos?</Button>
+          <Button color="inherit" onClick={push("/contactanos")}>
+            Contactanos
+          </Button>
         </div>
       </Toolbar>
       <Divider />
