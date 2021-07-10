@@ -9,7 +9,6 @@
     "**/.next/": true,
     "**/.vercel/": true,
     "**/.editorconfig": true,
-    "**/.babelrc": true,
     "**/.prettierrc.js": true,
     "**/.eslintrc.js": true,
     "**/src/styles/**/*.module.css.d.ts": true,
