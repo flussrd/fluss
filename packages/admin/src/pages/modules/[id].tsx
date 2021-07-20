@@ -52,7 +52,7 @@ const Module: NextPage = () => {
         <General />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Metrics />
+        <Metrics moduleId={moduleId} />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Logs />

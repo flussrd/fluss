@@ -8,19 +8,21 @@ import { Controller, useForm, UseFormMethods } from "react-hook-form";
 import FormField from "shared/components/FormField";
 import FormIconTitle from "shared/components/FormIconTitle";
 import FormSelect from "shared/components/FormSelect";
+import { useGetRoles } from "services/roles/hooks";
 import * as yup from "yup";
 
-interface UserFormProps {}
+interface UserFormProps {
+  form: UseFormMethods<UserFormModel>;
+}
 
 export interface UserFormRef {
   form: UseFormMethods<UserFormModel>;
 }
 
 const UserForm = forwardRef((props: UserFormProps, ref: ForwardedRef<UserFormRef>) => {
-  const form = useForm<UserFormModel>({ resolver: yupResolver(schema) });
-  const roles = mockRoles();
-
-  useImperativeHandle(ref, () => ({ form }), []);
+  const rolesQuery = useGetRoles();
+  const { form } = props;
+  const roles = rolesQuery?.data?.data || [];
 
   return (
     <>
@@ -81,17 +83,18 @@ const UserForm = forwardRef((props: UserFormProps, ref: ForwardedRef<UserFormRef
       <Controller
         name="rolName"
         control={form.control}
-        defaultValue=""
+        defaultValue={form.getValues().rolName || "Ninguno"}
         as={
           <FormSelect
             noneText="Sin seleccionar"
+            noneValue="Ninguno"
             label="Rol"
             helperText={form.errors.rolName?.message}
             error={!!form.errors.rolName}
           >
             {roles.map((rol) => (
-              <MenuItem key={rol.id} value={rol.name}>
-                {rol.name}
+              <MenuItem key={rol.roleName} value={rol.roleName}>
+                {rol.roleName}
               </MenuItem>
             ))}
           </FormSelect>
@@ -101,6 +104,34 @@ const UserForm = forwardRef((props: UserFormProps, ref: ForwardedRef<UserFormRef
   );
 });
 
+export function useUserForm(
+  defaultValues: Partial<UserFormModel> = {
+    name: "",
+    email: "",
+    status: "",
+    rolName: "",
+    surname: "",
+  },
+  dependencies: any[] = []
+) {
+  const form = useForm<UserFormModel>({
+    resolver: yupResolver(schema),
+  });
+
+  React.useEffect(() => {
+    console.log({ defaultValues });
+    form.reset({
+      name: defaultValues.name,
+      surname: defaultValues.surname,
+      rolName: defaultValues.rolName,
+      status: defaultValues.status,
+      email: defaultValues.email,
+    });
+  }, dependencies);
+
+  return form;
+}
+
 export default UserForm;
 
 const schema = yup.object().shape({
@@ -108,10 +139,7 @@ const schema = yup.object().shape({
   surname: yup.string().required("Debe ingresar un apellido para el usuario"),
   rolName: yup.string().required("Debe ingresar un nombre para el usuario"),
   status: yup.string().required("Debe indicar el estado del usuario"),
-  email: yup
-    .string()
-    .required("Debe ingresar un email para el usuario")
-    .email("Debe ingresar un correo válido. Ej: usuario@email.com"),
+  email: yup.string().required("Debe ingresar un email para el usuario"),
 });
 
 export type UserFormModel = {
@@ -121,3 +149,4 @@ export type UserFormModel = {
   status: string;
   email: string;
 };
+

@@ -15,21 +15,13 @@ export function mockPermissions(): Permission[] {
   const permissions: Array<Permission> = [
     {
       id: "p1",
-      name: "Módulos",
-      description: "Permite el acceso al manejo de módulos del sistema",
+      name: "*",
+      description: "Permite total acceso a los módulos en el sistema",
       actions: ["*"],
-      creationDate: new Date(2021, 6, 11),
-      updatedAt: new Date(2021, 6, 11),
-    },
-    {
-      id: "p2",
-      name: "Usuarios",
-      actions: ["*"],
-      description:
-        "Permite manejar los usuarios dentro de la aplicación. Solo existe un superadmin",
       creationDate: new Date(2021, 6, 11),
       updatedAt: new Date(2021, 6, 11),
     },
   ];
   return permissions;
 }
+

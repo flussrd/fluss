@@ -14,7 +14,7 @@ function PieChartLegends<T>(props: PieChartLegendsProps<T>) {
 
   return (
     <div className={classes.content}>
-      {data.map((item) => {
+      {(data || []).map((item) => {
         const itemColor: any = typeof color !== "function" ? item[color] : color(item);
         const itemLabel: any = typeof label !== "function" ? item[label] : label(item);
 

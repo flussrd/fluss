@@ -9,7 +9,9 @@ export default function Roles() {
   return (
     <>
       <DataTable showGlobalFilter data={mockRoles()} columns={columns} />
+      {/*TODO:
       <CreateRol />
+      */}
     </>
   );
 }
@@ -19,5 +21,6 @@ const columns: DataTableColumn<Role>[] = [
   { Header: "Descripción", accessor: "description" },
   { Header: "Fecha de creación", accessor: (rol) => formatDate(rol.creationDate) },
   { Header: "Última actualización", accessor: (rol) => formatDate(rol.lastUpdate) },
-  { Header: " ", columnWidth: "100px", id: "info", accessor: (rol) => <EditRol role={rol} /> },
+  //{ Header: " ", columnWidth: "100px", id: "info", accessor: (rol) => <EditRol role={rol} /> },
 ];
+

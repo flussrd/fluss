@@ -97,9 +97,9 @@ const UserInfo: FC<UserInfoProps> = () => {
 
         <br />
 
-        <FormIconTitle Icon={LockOutlinedIcon} title="Contraseña" marginBottom={1} />
+        {/* <FormIconTitle Icon={LockOutlinedIcon} title="Contraseña" marginBottom={1} />
 
-        <Button variant="outlined">Cambiar contraseña</Button>
+        <Button variant="outlined">Cambiar contraseña</Button> */}
       </div>
     </div>
   );

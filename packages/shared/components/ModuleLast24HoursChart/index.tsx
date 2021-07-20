@@ -14,6 +14,8 @@ const ModuleLast24HoursChart: FC<ModuleLast24HoursChartProps> = (props) => {
   const { isLoading, data } = useGetModuleReport(props.moduleId);
   const { days, parameterMeasure: measures } = data ? data : { days: [], parameterMeasure: [] };
 
+  console.log({ isLoading });
+
   if (isLoading) {
     return (
       <div className={classes.loader}>

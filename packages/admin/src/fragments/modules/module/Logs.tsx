@@ -42,19 +42,19 @@ const columns: DataTableColumn<Log>[] = [
         <AccordionDetails>
           <List dense>
             <ListItem>
-              <ListItemText primary="pH: 4" />
+              <ListItemText primary="pH: 4.54" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Oxígeno: 4" />
+              <ListItemText primary="Oxígeno: 5.25" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Sólidos disueltos: 4" />
+              <ListItemText primary="Sólidos disueltos: 15.03" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Turbidez: 4" />
+              <ListItemText primary="Turbidez: 10.15" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Temperatura: 4" />
+              <ListItemText primary="Temperatura: 24.00" />
             </ListItem>
           </List>
         </AccordionDetails>
@@ -66,3 +66,4 @@ const columns: DataTableColumn<Log>[] = [
 const useStyles = makeStyles({});
 
 export default Logs;
+

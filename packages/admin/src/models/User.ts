@@ -1,5 +1,6 @@
 import { mockRoles } from "./Role";
 import UserStatus from "./UserStatus";
+import * as models from "services/users/models";
 
 type User = {
   id: string;
@@ -12,6 +13,20 @@ type User = {
   lastUpdate: Date;
   creationDate: Date;
 };
+
+export function fromUserResponse(user: models.User): User {
+  return {
+    id: user?.userID,
+    name: user?.name,
+    surname: "",
+    roleName: user?.roleName,
+    phoneNumber: user?.phoneNumber,
+    email: user?.email,
+    status: "active",
+    creationDate: user?.creationDate ? new Date(user?.creationDate) : new Date(),
+    lastUpdate: user?.updateDate ? new Date(user?.updateDate) : new Date(),
+  };
+}
 
 export function mockUsers(): User[] {
   const roles = mockRoles();
@@ -43,3 +58,4 @@ export function mockUsers(): User[] {
 }
 
 export default User;
+

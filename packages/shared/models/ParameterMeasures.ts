@@ -2,7 +2,8 @@ import {
   ModuleReportModel,
   ModuleReportData,
   Parameter,
-  ParameterType } from "../services/monitor/models";
+  ParameterType,
+} from "../services/monitor/models";
 import DayMeasures, { getDayOfTheMonthName, Day } from "./DayMeasures";
 import HourMeasure from "./HourMeasure";
 
@@ -16,7 +17,7 @@ type ParameterMeasure = {
 
 type ParameterMeasures = {
   days?: Day[];
-  parameterMeasure: ParameterMeasure[]
+  parameterMeasure: ParameterMeasure[];
 };
 
 const getColor = function (parameterType: string) {
@@ -36,47 +37,51 @@ const getColor = function (parameterType: string) {
     default:
       return "";
   }
-}
+};
 
 const getDays = function (measuresByDateDay: Record<number, HourMeasure[]>): Day[] {
-  const days: Day[] = []
-  const lastDate = Math.max(...Object.keys(measuresByDateDay) as any);
+  const days: Day[] = [];
+  const lastDate = Math.max(...(Object.keys(measuresByDateDay) as any));
 
   for (let dateDay in measuresByDateDay) {
     // Only return the last 48 hours data
     if (+dateDay < lastDate - 1) {
-      return
+      return;
     }
-    const day = getDayOfTheMonthName(dateDay)
-    days.push(day)
+    const day = getDayOfTheMonthName(dateDay);
+    days.push(day);
   }
 
-  return days
-}
+  return days;
+};
 
-const getMeasuresPerDay = function (measuresByDateDay: Record<number, HourMeasure[]>): DayMeasures[] {
-  const measures: DayMeasures[] = []
+const getMeasuresPerDay = function (
+  measuresByDateDay: Record<number, HourMeasure[]>
+): DayMeasures[] {
+  const measures: DayMeasures[] = [];
 
-  const lastDate = Math.max(...Object.keys(measuresByDateDay) as any);
+  const lastDate = Math.max(...(Object.keys(measuresByDateDay) as any));
 
   for (let dateDay in measuresByDateDay) {
     // Only return the last 48 hours data
     if (+dateDay < lastDate - 1) {
-      return
+      return;
     }
 
     measures.push({
       day: getDayOfTheMonthName(dateDay),
       measures: measuresByDateDay[dateDay],
-    })
+    });
   }
 
-  return measures
-}
+  return measures;
+};
 
 // TODO: handle the aggrupation by day in the backend service
-export function fromModuleReportFilterHourResponse(moduleReportResponse: ModuleReportModel): ParameterMeasures {
-  const today = new Date()
+export function fromModuleReportFilterHourResponse(
+  moduleReportResponse: ModuleReportModel
+): ParameterMeasures {
+  const today = new Date();
 
   const data: Record<ParameterType, Record<number, HourMeasure[]>> = {
     do: {},
@@ -85,7 +90,7 @@ export function fromModuleReportFilterHourResponse(moduleReportResponse: ModuleR
     ty: {},
     tmp: {},
     wqi: {},
-  }
+  };
 
   const maxPerParam: Record<ParameterType, number> = {
     do: 0,
@@ -94,7 +99,7 @@ export function fromModuleReportFilterHourResponse(moduleReportResponse: ModuleR
     ty: 0,
     tmp: 0,
     wqi: 0,
-  }
+  };
 
   const inf = 8000;
 
@@ -105,45 +110,45 @@ export function fromModuleReportFilterHourResponse(moduleReportResponse: ModuleR
     ty: inf,
     tmp: inf,
     wqi: inf,
-  }
+  };
 
-  moduleReportResponse.data.forEach((moduleReportDetailData: ModuleReportData) => {
-    const date = new Date(moduleReportDetailData.lastDate)
+  (moduleReportResponse.data || []).forEach((moduleReportDetailData: ModuleReportData) => {
+    const date = new Date(moduleReportDetailData.lastDate);
 
     if (date.getMonth() !== today.getMonth() || date.getFullYear() !== today.getFullYear()) {
-      return
+      return;
     }
 
-    const dateDay = date.getDate()
-    const hour = date.getHours()
+    const dateDay = date.getDate();
+    const hour = date.getHours();
 
-    moduleReportDetailData.parameters.forEach((parameter: Parameter) => {
+    (moduleReportDetailData.parameters || []).forEach((parameter: Parameter) => {
       if (!data[parameter.name][dateDay]) {
-        data[parameter.name][dateDay] = []
+        data[parameter.name][dateDay] = [];
       }
 
-      data[parameter.name][dateDay].push({ hour, value: Math.round(parameter.value * 100)/100 })
-      minPerParam[parameter.name] = Math.min(minPerParam[parameter.name], parameter.value)
-      maxPerParam[parameter.name] = Math.max(maxPerParam[parameter.name], parameter.value)
-    })
-  })
+      data[parameter.name][dateDay].push({ hour, value: Math.round(parameter.value * 100) / 100 });
+      minPerParam[parameter.name] = Math.min(minPerParam[parameter.name], parameter.value);
+      maxPerParam[parameter.name] = Math.max(maxPerParam[parameter.name], parameter.value);
+    });
+  });
 
-  const parameters: ParameterMeasure[] = []
-  const days = getDays(data["ph"])
+  const parameters: ParameterMeasure[] = [];
+  const days = getDays(data["ph"]);
 
   for (let parameterType in data) {
     let measuresByDateDay: Record<number, HourMeasure[]> = data[parameterType];
-    const measures = getMeasuresPerDay(measuresByDateDay)
+    const measures = getMeasuresPerDay(measuresByDateDay);
     parameters.push({
       parameterName: parameterType,
       max: maxPerParam[parameterType].toFixed(2),
       min: minPerParam[parameterType].toFixed(2),
       color: getColor(parameterType),
-      measures
-    })
+      measures,
+    });
   }
 
-  return { days, parameterMeasure: parameters }
+  return { days, parameterMeasure: parameters };
 }
 
 /*
@@ -303,5 +308,4 @@ export function mockParameterMeasures(): ParameterMeasures[] {
 }
 */
 export default ParameterMeasures;
-
 

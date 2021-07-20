@@ -2,15 +2,18 @@ import { IconButton, Tooltip, Typography } from "@material-ui/core";
 import { Edit } from "@material-ui/icons";
 import CreateUser from "fragments/users/CreateUser";
 import EditUser from "fragments/users/EditUser";
-import User, { mockUsers } from "models/User";
+import User, { mockUsers, fromUserResponse } from "models/User";
 import { userStatusToString } from "models/UserStatus";
 import { NextPage } from "next";
 import { useState } from "react";
+import { useGetUsers } from "services/users/hooks";
 import DataTable, { DataTableColumn, SelectColumnFilter } from "shared/components/DataTable";
 
 const Users: NextPage = () => {
   const [userId, setUserId] = useState<string>("");
-  const users = mockUsers();
+  const usersQuery = useGetUsers();
+  const usersData = usersQuery.data?.data;
+  const users = usersData ? usersData.map((user) => fromUserResponse(user)) : [];
   const columns = generateColumns(onEdit);
 
   function close() {
@@ -64,3 +67,4 @@ function generateColumns(onEdit: (userId: string) => () => void) {
 }
 
 export default Users;
+

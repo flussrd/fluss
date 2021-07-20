@@ -15,16 +15,8 @@ export function mockRoles(): Role[] {
   const roles: Array<Role> = [
     {
       id: "r1",
-      name: "Administrador2",
+      name: "superAdmin",
       description: "Tiene acceso a todos los módulos del sistema",
-      permissions: [],
-      creationDate: new Date(2021, 6, 10),
-      lastUpdate: new Date(2021, 6, 10),
-    },
-    {
-      id: "r2",
-      name: "Monitor",
-      description: "Encargado del manejo de los módulos",
       permissions: [],
       creationDate: new Date(2021, 6, 10),
       lastUpdate: new Date(2021, 6, 10),

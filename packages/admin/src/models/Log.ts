@@ -11,6 +11,11 @@ export function mockLogs(): Log[] {
       description: "Los parámetros han sido enviados y guardados",
       moduleName: "Región sureste",
     },
+    {
+      timestamp: new Date(Date.now()),
+      description: "Los parámetros han sido enviados y guardados",
+      moduleName: "Región sureste",
+    },
   ];
 }
 
